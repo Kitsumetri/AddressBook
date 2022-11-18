@@ -5,7 +5,7 @@ namespace AddressBookLib
     // Constructor
     Book::Book() = default;
 
-    [[maybe_unused]] Book::Book(const User &employee) {
+    Book::Book(const User &employee) {
         address_book.push_back(employee);
     }
 
@@ -19,7 +19,7 @@ namespace AddressBookLib
         address_book.push_back({id, name, grade});
     }
 
-    void Book::remove_by_id(uint32_t id) {
+    void Book::remove_by_id(const uint32_t id) {
         for (auto it = address_book.begin(); it != address_book.end(); ++it) {
             if (it->u_id == id) {
                 address_book.erase(it);
@@ -29,7 +29,7 @@ namespace AddressBookLib
         std::cerr << "Remove error! User wasn't found" << std::endl;
     }
 
-    User Book::find(uint32_t id) const
+    User Book::find(const uint32_t id) const
     {
         for (const User& it : address_book) {
             if (it.u_id == id)
