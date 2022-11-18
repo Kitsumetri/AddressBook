@@ -36,7 +36,7 @@ namespace AddressBookLib
                 return it;
         }
         std::cerr << "\nFind error! User wasn't found by id=" << id << "!" << std::endl;
-        exit(-1);
+        exit(-1); // I know that this is an awful :)
     }
     User Book::find(const std::string& name) const {
         for (const User& it : address_book) {
