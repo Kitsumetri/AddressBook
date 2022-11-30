@@ -4,46 +4,59 @@
 #include <list>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 namespace AddressBookLib
 {
-    struct User
+    class Employee
     {
-        uint32_t u_id;
-        std::string u_name;
-        uint16_t u_grade;
+    private:
+        friend class Book;
 
-        // I'm lazy to make operators << and >> :)
-        void print() const {
-            std::cout << "User(id=" << u_id
-                      << ", name='" << u_name
-                      << "', grade=" <<  u_grade << ")";
-        }
+        uint32_t u_id {0};
+        std::string u_name;
+        uint16_t u_grade {0};
+
+    public:
+        Employee() = default;
+        Employee(uint32_t id, std::string name, uint16_t grade) : u_id(id), u_name(std::move(name)), u_grade(grade) {};
+        ~Employee() = default;
+
+        friend std::ostream& operator<<(std::ostream &out, const Employee &obj);
+        friend std::istream& operator>>(std::istream &in, Employee &obj);
+        friend bool operator==(const Employee &emp_1, const Employee &emp_2);
+        friend bool operator!=(const Employee &emp_1, const Employee &emp_2);
+
     };
 
     class Book
     {
     private:
-        std::list<User> address_book;
+        std::list<Employee> address_book;
     public:
         // Constructor
         Book();
-        [[maybe_unused]] explicit Book(const User& empleyee);
+        Book(const Book& new_book);
+
+        Book& operator=(const Book& new_book);
+        explicit Book(const Employee& empleyee);
 
         // Destructor
         ~Book();
 
-        void add_user(const User& employee);
+        void add_user(const Employee& employee);
         void add_user(uint32_t id, const std::string& name, uint16_t grade);
 
         void remove_by_id(uint32_t id);
 
-        [[nodiscard]] User find(uint32_t id) const;
-        [[nodiscard]] User find(const std::string &name) const;
-        void print() const;
+        Employee find(uint32_t id);
+        Employee find(const std::string &name);
+
+        friend std::ostream& operator<<(std::ostream &out, const Book &obj);
+        Book operator+(const Employee& emp);
+        Book operator-(uint32_t id);
+        Employee& operator[](uint32_t);
         void clear();
     };
-
 }
-
 #endif
